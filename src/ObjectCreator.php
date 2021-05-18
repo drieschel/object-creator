@@ -4,6 +4,7 @@
 namespace Drieschel\ObjectCreator;
 
 
+use Drieschel\ObjectCreator\Instantiator\DateTimeInstantiator;
 use Drieschel\ObjectCreator\Instantiator\ReflectionInstantiator;
 
 class ObjectCreator implements ObjectCreatorInterface
@@ -184,7 +185,7 @@ class ObjectCreator implements ObjectCreatorInterface
      * @param string $instantiatorClassName
      * @return ObjectInstantiatorInterface
      */
-    public function registerInstantiator(string $instantiatorClassName): ?ObjectInstantiatorInterface
+    public function getInstantiator(string $instantiatorClassName): ?ObjectInstantiatorInterface
     {
         return $this->instantiators[$instantiatorClassName] ?? null;
     }
@@ -195,14 +196,14 @@ class ObjectCreator implements ObjectCreatorInterface
      */
     public function hasInstantiator(string $instantiatorClassName): bool
     {
-        return $this->registerInstantiator($instantiatorClassName) !== null;
+        return $this->getInstantiator($instantiatorClassName) !== null;
     }
 
     /**
      * @param ObjectInstantiatorInterface $instantiator
      * @return ObjectCreator
      */
-    public function setInstantiator(ObjectInstantiatorInterface $instantiator): self
+    public function registerInstantiator(ObjectInstantiatorInterface $instantiator): self
     {
         $this->instantiators[get_class($instantiator)] = $instantiator;
 
@@ -221,10 +222,10 @@ class ObjectCreator implements ObjectCreatorInterface
      * @param ObjectInstantiatorInterface ...$instantiators
      * @return ObjectCreator
      */
-    public function setInstantiators(ObjectInstantiatorInterface ...$instantiators): self
+    public function registerInstantiators(ObjectInstantiatorInterface ...$instantiators): self
     {
         foreach ($instantiators as $instantiator) {
-            $this->setInstantiator($instantiator);
+            $this->registerInstantiator($instantiator);
         }
 
         return $this;
@@ -236,5 +237,13 @@ class ObjectCreator implements ObjectCreatorInterface
     public function getPriority(): int
     {
         return 0;
+    }
+
+    /**
+     * @return void
+     */
+    public function registerDefaultInstantiators(): void
+    {
+        $this->registerInstantiator(new DateTimeInstantiator());
     }
 }
