@@ -26,7 +26,7 @@ class Entity {
     
     protected bool $bool;
     
-    protected \DateTimeImmutable $datetime;
+    protected \DateTimeInterface $datetime;
     
     public function __construct(int $int, string $string) {
         $this->int = $int;
@@ -45,7 +45,7 @@ class Entity {
         return $this;
     }
         
-    public function setDatetime(\DateTimeImmutable $datetime): self
+    public function setDatetime(\DateTimeInterface $datetime): self
     {
         $this->datetime = $datetime;
         return $this;
@@ -55,8 +55,12 @@ class Entity {
 // Instantiate the creator
 $creator = new ObjectCreator();
 
+// Adding a class mapping for arguments from type DateTimeInterface.
+// All arguments from type DateTimeInterface will be instantiated as DateTimeImmutable 
+$creator->setClassMapping(\DateTimeInterface::class, \DateTimeImmutable::class);
+
 // Registering a DateTime instantiator which knows how to
-// instantiate an object that implements the DateTimeInterface 
+// instantiate objects that implements the DateTimeInterface 
 $creator->registerInstantiator(new DateTimeInstantiator());
 
 // Instantiate an object

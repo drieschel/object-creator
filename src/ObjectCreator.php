@@ -10,6 +10,11 @@ use Drieschel\ObjectCreator\Instantiator\ReflectionInstantiator;
 class ObjectCreator implements ObjectCreatorInterface
 {
     /**
+     * @var array<string, string>
+     */
+    protected array $classMappings = [];
+
+    /**
      * @var array<ObjectInstantiatorInterface>
      */
     protected array $instantiators = [];
@@ -58,7 +63,7 @@ class ObjectCreator implements ObjectCreatorInterface
                 if ($argumentReflectionClass !== null) {
                     if (is_array($value)) {
                         $value = array_map(function ($argumentData) use ($argumentReflectionClass) {
-                            $argumentClassName = $argumentReflectionClass->getName();
+                            $argumentClassName = $this->getArgumentClassName($argumentReflectionClass->getName());
                             if ($argumentData instanceof $argumentClassName) {
                                 return $argumentData;
                             }
@@ -108,7 +113,7 @@ class ObjectCreator implements ObjectCreatorInterface
 
                     $argumentClassName = null;
                     if ($reflectionParam->getClass() !== null) {
-                        $argumentClassName = $reflectionParam->getClass()->getName();
+                        $argumentClassName = $this->getArgumentClassName($reflectionParam->getClass()->getName());
                     }
 
                     foreach ($arguments[$argumentName] as $argumentValue) {
@@ -156,6 +161,49 @@ class ObjectCreator implements ObjectCreatorInterface
     {
         return class_exists($className) && $this->reflectionClasses->get($className)->isInstantiable();
     }
+
+    /**
+     * @param string $className
+     * @return string|null
+     */
+    public function getArgumentClassName(string $className): string
+    {
+        return $this->classMappings[$className] ?? $className;
+    }
+
+    /**
+     * @param string $fromClassName
+     * @param string $toClassName
+     * @return ObjectCreator
+     */
+    public function setClassMapping(string $fromClassName, string $toClassName): self
+    {
+        $this->classMappings[$fromClassName] = $toClassName;
+
+        return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getClassMappings(): array
+    {
+        return $this->classMappings;
+    }
+
+    /**
+     * @param string[] $classMappings
+     * @return ObjectCreator
+     */
+    public function setClassMappings(array $classMappings): self
+    {
+        foreach($classMappings as $fromClassName => $toClassName) {
+            $this->setClassMapping($fromClassName, $toClassName);
+        }
+
+        return $this;
+    }
+
 
     /**
      * @param string $className
@@ -232,18 +280,18 @@ class ObjectCreator implements ObjectCreatorInterface
     }
 
     /**
-     * @return integer
-     */
-    public function getPriority(): int
-    {
-        return 0;
-    }
-
-    /**
      * @return void
      */
     public function registerDefaultInstantiators(): void
     {
         $this->registerInstantiator(new DateTimeInstantiator());
+    }
+
+    /**
+     * @return integer
+     */
+    public function getPriority(): int
+    {
+        return 0;
     }
 }
