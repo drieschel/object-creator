@@ -1,5 +1,5 @@
 # Object Creator
-The Object Creator can instantiate and initialize objects dynamically. It can be used to instantiate and initialize objects from classes which represent a data structure. It is possible to add instantiators which know how to instantiate objects of a specific class. In this way it can be ensured that all objects are getting instantiated properly. 
+The Object Creator can be used to instantiate and initialize objects from classes which represent a data structure. It is possible to add instantiators which know how to instantiate objects of a specific class. In this way it can be ensured that all objects are getting instantiated properly. 
 
 ### Usage
 
@@ -55,11 +55,11 @@ class Entity {
 // Instantiate the creator
 $creator = new ObjectCreator();
 
-// Adding a class mapping for arguments from type DateTimeInterface.
+// Add a class mapping for arguments from type DateTimeInterface.
 // All arguments from type DateTimeInterface will be instantiated as DateTimeImmutable 
 $creator->setClassMapping(\DateTimeInterface::class, \DateTimeImmutable::class);
 
-// Registering a DateTime instantiator which knows how to
+// Register a DateTime instantiator which knows how to
 // instantiate objects that implements the DateTimeInterface 
 $creator->registerInstantiator(new DateTimeInstantiator());
 

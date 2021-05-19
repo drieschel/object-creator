@@ -68,7 +68,7 @@ class ObjectCreator implements ObjectCreatorInterface
                                 return $argumentData;
                             }
 
-                            return $this->instantiateAndInitialize($argumentReflectionClass->getName(), is_array($argumentData) ? $argumentData : [$argumentData]);
+                            return $this->instantiateAndInitialize($argumentClassName, is_array($argumentData) ? $argumentData : [$argumentData]);
                         }, $value);
                     }
                 }
