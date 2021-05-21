@@ -32,9 +32,15 @@ class TestClass
     protected ?TestArg2 $e = null;
 
     /**
-     * @var \DateTimeImmutable|null
+     * @var \DateTimeInterface|null
      */
-    protected ?\DateTimeImmutable $f = null;
+    protected ?\DateTimeInterface $f = null;
+
+    /**
+     * @var FooBarInterface|null
+     */
+    protected ?FooBarInterface $g = null;
+
 
     /**
      * TestClass constructor.
@@ -112,18 +118,36 @@ class TestClass
     /**
      * @return \DateTimeImmutable|null
      */
-    public function getF(): ?\DateTimeImmutable
+    public function getF(): ?\DateTimeInterface
     {
         return $this->f;
     }
 
     /**
-     * @param \DateTimeImmutable|null $f
+     * @param \DateTimeInterface|null $f
      * @return TestClass
      */
-    public function setF(?\DateTimeImmutable $f): TestClass
+    public function setF(?\DateTimeInterface $f): TestClass
     {
         $this->f = $f;
+        return $this;
+    }
+
+    /**
+     * @return FooBarInterface|null
+     */
+    public function getG(): ?FooBarInterface
+    {
+        return $this->g;
+    }
+
+    /**
+     * @param FooBarInterface|null $g
+     * @return TestClass
+     */
+    public function setG(?FooBarInterface $g): TestClass
+    {
+        $this->g = $g;
         return $this;
     }
 }

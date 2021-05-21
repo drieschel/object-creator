@@ -55,6 +55,24 @@ class ObjectCreatorTest extends TestCase
     }
 
     /**
+     * @dataProvider initializeWithClassMappingsProvider
+     *
+     * @param object $subject
+     * @param array $arguments
+     * @param array $classMappings
+     * @param object $expectedObject
+     * @throws Exception
+     * @throws \ReflectionException
+     */
+    public function testInitializeWithClassMappings(object $subject, array $arguments, array $classMappings, object $expectedObject)
+    {
+        $creator = new ObjectCreator();
+        $creator->setClassMappings($classMappings);
+        $creator->initialize($subject, $arguments);
+        $this->assertEquals($expectedObject, $subject);
+    }
+
+    /**
      * @dataProvider constructorArgsProvider
      *
      * @param string $className
@@ -106,6 +124,16 @@ class ObjectCreatorTest extends TestCase
             [TestClass::class, ['a' => 'wtf', 'b' => 'string'], new TestClass(new TestArg1('wtf'), 'string')],
             [TestClass::class, ['something', 'in your mind', 42.], new TestClass(new TestArg1('something'), 'in your mind', 42.)],
             [TestClass::class, ['a' => new TestArg1('yolo'), 'b' => 'string'], new TestClass(new TestArg1('yolo'), 'string', 0.5)],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function initializeWithClassMappingsProvider(): array
+    {
+        return [
+            [new TestClass(new TestArg1('ey'), 1.2), ['g' => ['fooBar' => 'fooBaz']], [FooBarInterface::class => FooBarClass::class], (new TestClass(new TestArg1('ey'), 1.2))->setG(new FooBarClass('fooBaz'))],
         ];
     }
 
