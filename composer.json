@@ -1,4 +1,14 @@
 {
+    "name": "drieschel/object-creator",
+    "description": "Initialize and instantiate (data structure) objects recursively",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Immanuel Klinkenberg",
+            "email": "drieschel@yahoo.de"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "Drieschel\\ObjectCreator\\": "src"
