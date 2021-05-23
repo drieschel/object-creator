@@ -133,7 +133,7 @@ class ObjectCreatorTest extends TestCase
     public function initializeWithClassMappingsProvider(): array
     {
         return [
-            [new TestClass(new TestArg1('ey'), 1.2), ['g' => ['fooBar' => 'fooBaz']], [FooBarInterface::class => FooBarClass::class], (new TestClass(new TestArg1('ey'), 1.2))->setG(new FooBarClass('fooBaz'))],
+            [new TestClass(new TestArg1('ey'), 1.2), ['g' => ['fooBar' => 'fooBaz']], [FooBarInterface::class => FooBarClass::class], (new TestClass(new TestArg1('ey'), 1.2))->setG((new FooBarClass())->setFooBar('fooBaz'))],
         ];
     }
 
