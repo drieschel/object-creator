@@ -10,7 +10,9 @@ class Exception extends \Exception
         INSTANTIATION_NOT_SUPPORTED = 10,
         SETTER_ARGUMENT_MISSING = 20,
         CONSTRUCTOR_ARGUMENTS_MISSING = 30,
-        CLASS_NOT_FOUND = 40;
+        CLASS_NOT_FOUND = 40,
+        CLASS_IS_NOT_SUBCLASS_OF = 50,
+        INSTANCE_IS_NOT_A = 60;
 
 
     /**
@@ -53,5 +55,25 @@ class Exception extends \Exception
     public static function classNotExists(string $className): self
     {
         return new self(sprintf('Class %s not (auto-)loaded or not exists', $className), self::CLASS_NOT_FOUND);
+    }
+
+    /**
+     * @param string $relatedClass
+     * @param string $className
+     * @return Exception
+     */
+    public static function classIsNotSubclassOf(string $relatedClass, string $className): self
+    {
+        return new self(sprintf('%s is not a subclass of %s', $relatedClass, $className), self::CLASS_IS_NOT_SUBCLASS_OF);
+    }
+
+    /**
+     * @param string $instanceClass
+     * @param string $className
+     * @return static
+     */
+    public static function instanceIsNotA(string $instanceClass, string $className): self
+    {
+        return new self(sprintf('Instance of %s is not a %s', $instanceClass, $className), self::INSTANCE_IS_NOT_A);
     }
 }

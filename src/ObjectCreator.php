@@ -39,16 +39,16 @@ class ObjectCreator implements ObjectCreatorInterface
 
 
     /**
-     * @param object $subject
+     * @param object $instance
      * @param array $data
      * @throws \ReflectionException|Exception
      */
-    public function initialize(object $subject, array $data = []): void
+    public function initialize(object $instance, array $data = []): void
     {
-        $reflectionClass = $this->reflectionClasses->getByObject($subject);
+        $reflectionClass = $this->reflectionClasses->getByObject($instance);
         foreach ($data as $property => $value) {
             $setterName = sprintf('set%s', ucfirst($property));
-            if (is_callable([$subject, $setterName])) {
+            if (is_callable([$instance, $setterName])) {
                 $reflectionMethod = $reflectionClass->getMethod($setterName);
                 $reflectionParam = $reflectionMethod->getParameters()[0] ?? null;
                 if ($reflectionParam === null) {
@@ -73,7 +73,7 @@ class ObjectCreator implements ObjectCreatorInterface
                     }
                 }
 
-                $subject->{$setterName}(...$value);
+                $instance->{$setterName}(...$value);
             }
         }
     }
