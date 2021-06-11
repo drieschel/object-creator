@@ -13,6 +13,7 @@ class ReflectionClassCollection
 
     /**
      * @param string $className
+     * @throws Exception
      * @return \ReflectionClass
      * @throws \ReflectionException
      */
@@ -30,12 +31,12 @@ class ReflectionClassCollection
     }
 
     /**
-     * @param object $object
+     * @param object $instance
      * @return \ReflectionClass
-     * @throws \ReflectionException
+     * @throws \ReflectionException|Exception
      */
-    public function getByObject(object $object): \ReflectionClass
+    public function getByInstance(object $instance): \ReflectionClass
     {
-        return $this->get(get_class($object));
+        return $this->get(get_class($instance));
     }
 }

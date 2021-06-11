@@ -15,7 +15,7 @@ class ReflectionClassCollectionTest extends TestCase
     public function testGetByObject(object $object)
     {
         $collection = new ReflectionClassCollection();
-        $reflectionClass = $collection->getByObject($object);
+        $reflectionClass = $collection->getByInstance($object);
         $this->assertInstanceOf(\ReflectionClass::class, $reflectionClass);
         $this->assertEquals(get_class($object), $reflectionClass->getName());
     }

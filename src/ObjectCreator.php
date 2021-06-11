@@ -45,7 +45,7 @@ class ObjectCreator implements ObjectCreatorInterface
      */
     public function initialize(object $instance, array $data = []): void
     {
-        $reflectionClass = $this->reflectionClasses->getByObject($instance);
+        $reflectionClass = $this->reflectionClasses->getByInstance($instance);
         foreach ($data as $property => $value) {
             $setterName = sprintf('set%s', ucfirst($property));
             if (is_callable([$instance, $setterName])) {
@@ -203,7 +203,6 @@ class ObjectCreator implements ObjectCreatorInterface
 
         return $this;
     }
-
 
     /**
      * @param string $className

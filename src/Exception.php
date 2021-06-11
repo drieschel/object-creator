@@ -12,7 +12,9 @@ class Exception extends \Exception
         CONSTRUCTOR_ARGUMENTS_MISSING = 30,
         CLASS_NOT_FOUND = 40,
         CLASS_IS_NOT_SUBCLASS_OF = 50,
-        INSTANCE_IS_NOT_A = 60;
+        INSTANCE_IS_NOT_A = 60,
+        VALUE_IS_NOT_A_PROPERTY_TYPE = 70,
+        INVALID_PROPERTY_NAME_FORMAT = 80;
 
 
     /**
@@ -70,10 +72,28 @@ class Exception extends \Exception
     /**
      * @param string $instanceClass
      * @param string $className
-     * @return static
+     * @return Exception
      */
     public static function instanceIsNotA(string $instanceClass, string $className): self
     {
         return new self(sprintf('Instance of %s is not a %s', $instanceClass, $className), self::INSTANCE_IS_NOT_A);
+    }
+
+    /**
+     * @param integer $value
+     * @return Exception
+     */
+    public static function valueIsNotAPropertyType(int $value): self
+    {
+        return new self(sprintf('%d is not a property type', $value), self::VALUE_IS_NOT_A_PROPERTY_TYPE);
+    }
+
+    /**
+     * @param string $format
+     * @return Exception
+     */
+    public static function invalidPropertyNameFormat(string $format): self
+    {
+        return new self(sprintf('%s is not a property name format', $format), self::INVALID_PROPERTY_NAME_FORMAT);
     }
 }
